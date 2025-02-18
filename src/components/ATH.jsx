@@ -2,16 +2,7 @@ import { useState, useEffect } from "react";
 import Chrono from "./Chrono"; // Import du composant Chrono
 
 const ATH = ({ showChrono = true }) => {
-  const [fuel, setFuel] = useState(100);
-
-  useEffect(() => {
-    // Jauge de carburant qui diminue progressivement
-    const fuelConsumption = setInterval(() => {
-      setFuel((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 500);
-
-    return () => clearInterval(fuelConsumption);
-  }, []);
+  const [fuel] = useState(100);
 
   return (
     <div style={styles.athContainer}>

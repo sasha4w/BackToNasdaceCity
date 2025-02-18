@@ -2,6 +2,7 @@ import { useState } from "react";
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "/vite.svg";
 import "./App.css";
+import Quiz from "./components/Quiz";
 import ThreeScene from "./components/ThreeScene";
 import ATH from "./components/ATH";
 import AmbientSound from "./components/AmbientSound";
@@ -19,7 +20,7 @@ function App() {
         </a>
       </div>
       <div>
-        <h1>Three.js avec React</h1>
+        <h1>Les Nasdaces de l'espace</h1>
         <ATH showChrono={true} /> {/* Affiche le chrono */}
         <ThreeScene />
         <AmbientSound
@@ -35,6 +36,7 @@ function App() {
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
+        <Quiz />
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
