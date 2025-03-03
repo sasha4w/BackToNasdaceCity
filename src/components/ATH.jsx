@@ -1,9 +1,6 @@
-import { useState, useEffect } from "react";
 import Chrono from "./Chrono"; // Import du composant Chrono
 
-const ATH = ({ showChrono = true }) => {
-  const [fuel] = useState(100);
-
+const ATH = ({ showChrono = true, fuel = 100 }) => {
   return (
     <div style={styles.athContainer}>
       {/* Afficher le chrono seulement si showChrono est true */}

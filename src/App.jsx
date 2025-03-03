@@ -7,7 +7,7 @@ import ThreeScene from "./components/ThreeScene";
 import ATH from "./components/ATH";
 import AmbientSound from "./components/AmbientSound";
 function App() {
-  const [count, setCount] = useState(0);
+  const [fuel, setFuel] = useState(100);
 
   return (
     <>
@@ -21,7 +21,7 @@ function App() {
       </div>
       <div>
         <h1>Les Nasdaces de l'espace</h1>
-        <ATH showChrono={true} /> {/* Affiche le chrono */}
+        <ATH showChrono={true} fuel={fuel} /> {/* Affiche le chrono */}
         <ThreeScene />
         <AmbientSound
           bgmSrc="/audios/zinzin.mp3"
@@ -30,17 +30,8 @@ function App() {
         />
       </div>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-        <Quiz />
+        <Quiz setter={setFuel} fuel={fuel} />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }

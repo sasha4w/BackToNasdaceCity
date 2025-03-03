@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ATH from "./ATH";
 
-const Quiz = ({ onGameOver, onScoreUpdate }) => {
+const Quiz = ({ onGameOver, onScoreUpdate, setter, fuel }) => {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [countdown, setCountdown] = useState(8);
   const [result, setResult] = useState("");
   const [isGameActive, setIsGameActive] = useState(true);
-  const [fuel, setFuel] = useState(100);
   const [score, setScore] = useState(0);
 
   const questions = [
@@ -101,7 +99,7 @@ const Quiz = ({ onGameOver, onScoreUpdate }) => {
   const handleTimeout = () => {
     setIsGameActive(false);
     setResult("Temps écoulé !");
-    setFuel((prev) => prev - 10);
+    setter((prev) => prev - 10);
 
     if (fuel === 0) {
       onGameOver?.();
@@ -128,7 +126,7 @@ const Quiz = ({ onGameOver, onScoreUpdate }) => {
       setScore((prev) => prev + 10);
       onScoreUpdate?.(score + 10);
     } else {
-      setFuel((prev) => prev - 10);
+      setter((prev) => prev - 10);
       if (fuel <= 10) {
         onGameOver?.();
       }
@@ -143,7 +141,6 @@ const Quiz = ({ onGameOver, onScoreUpdate }) => {
     <div className="w-full max-w-2xl mx-auto">
       <div className="p-6">
         <div className="flex justify-between mb-4">
-          <div className="text-lg">Carburant: {fuel}</div>
           <div className="text-lg">Score: {score}</div>
           <div className="text-xl font-bold">{countdown}</div>
         </div>
