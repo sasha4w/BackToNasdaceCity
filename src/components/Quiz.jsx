@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Quiz = ({ onGameOver, onScoreUpdate, setter, fuel }) => {
   const [currentQuestion, setCurrentQuestion] = useState(null);
@@ -6,6 +7,13 @@ const Quiz = ({ onGameOver, onScoreUpdate, setter, fuel }) => {
   const [result, setResult] = useState("");
   const [isGameActive, setIsGameActive] = useState(true);
   const [score, setScore] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (fuel <= 0) {
+      navigate("/gameover");
+    }
+  }, [fuel, navigate]);
 
   const questions = [
     {
@@ -48,26 +56,6 @@ const Quiz = ({ onGameOver, onScoreUpdate, setter, fuel }) => {
       ],
       correct: 1,
     },
-    {
-      question: "Quelle est la température à la surface du Soleil ?",
-      choices: ["1 500°C", "3 500°C", "5 500°C", "10 000°C"],
-      correct: 2,
-    },
-    {
-      question: "Qu'est-ce qu'une année-lumière ?",
-      choices: [
-        "La distance parcourue par la lumière en un an",
-        "Le temps que met la lumière pour atteindre la Terre",
-        "L'âge d'une étoile",
-        "La durée de vie d'une galaxie",
-      ],
-      correct: 0,
-    },
-    {
-      question: "Quelle planète est surnommée la planète rouge ?",
-      choices: ["Vénus", "Mars", "Jupiter", "Mercure"],
-      correct: 1,
-    },
   ];
 
   useEffect(() => {
@@ -100,11 +88,7 @@ const Quiz = ({ onGameOver, onScoreUpdate, setter, fuel }) => {
     setIsGameActive(false);
     setResult("Temps écoulé !");
     setter((prev) => prev - 10);
-
-    if (fuel === 0) {
-      onGameOver?.();
-    }
-
+    if (fuel === 0) onGameOver?.();
     setTimeout(nextQuestion, 1500);
   };
 
@@ -127,9 +111,7 @@ const Quiz = ({ onGameOver, onScoreUpdate, setter, fuel }) => {
       onScoreUpdate?.(score + 10);
     } else {
       setter((prev) => prev - 10);
-      if (fuel <= 10) {
-        onGameOver?.();
-      }
+      if (fuel <= 10) onGameOver?.();
     }
 
     setTimeout(nextQuestion, 1500);
@@ -138,46 +120,71 @@ const Quiz = ({ onGameOver, onScoreUpdate, setter, fuel }) => {
   if (!currentQuestion) return null;
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="p-6">
-        <div className="flex justify-between mb-4">
-          <div className="text-lg">Score: {score}</div>
-          <div className="text-xl font-bold">{countdown}</div>
-        </div>
+    <div
+      style={{
+        maxWidth: "600px",
+        margin: "0 auto",
+        padding: "20px",
+        background: "rgba(255, 255, 255, 0.1)",
+        borderRadius: "10px",
+        boxShadow: "0 0 10px #ff00ff",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "10px",
+        }}
+      >
+        <div style={{ fontSize: "18px" }}>Score: {score}</div>
+        <div style={{ fontSize: "20px", fontWeight: "bold" }}>{countdown}</div>
+      </div>
 
-        {result && (
-          <div
-            className={`text-center text-xl font-bold mb-4 ${
-              result === "Victoire !" ? "text-green-600" : "text-red-600"
-            }`}
+      {result && (
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: "20px",
+            fontWeight: "bold",
+            marginBottom: "10px",
+            color: result === "Victoire !" ? "#00ff00" : "#ff0000",
+          }}
+        >
+          {result}
+        </div>
+      )}
+
+      <div
+        style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "10px" }}
+      >
+        {currentQuestion.question}
+      </div>
+
+      <div>
+        {currentQuestion.choices.map((choice, index) => (
+          <button
+            key={index}
+            onClick={() => handleAnswer(index)}
+            disabled={!isGameActive}
+            style={{
+              display: "block",
+              width: "100%",
+              padding: "10px",
+              marginBottom: "5px",
+              borderRadius: "5px",
+              border: "2px solid #ff00ff",
+              background: "linear-gradient(45deg, #ff00ff, #00ff00)",
+              color: "white",
+              fontSize: "16px",
+              cursor: "pointer",
+              transition: "0.3s",
+              opacity: isGameActive ? 1 : 0.5,
+            }}
           >
-            {result}
-          </div>
-        )}
-
-        <div className="text-xl font-semibold mb-4">
-          {currentQuestion.question}
-        </div>
-
-        <div className="space-y-2">
-          {currentQuestion.choices.map((choice, index) => (
-            <button
-              key={index}
-              onClick={() => handleAnswer(index)}
-              disabled={!isGameActive}
-              className={`w-full p-3 text-left rounded border hover:bg-gray-100 
-                transition-colors disabled:opacity-50 disabled:cursor-not-allowed
-                ${
-                  !isGameActive && index === currentQuestion.correct
-                    ? "bg-green-100"
-                    : ""
-                }
-              `}
-            >
-              {choice}
-            </button>
-          ))}
-        </div>
+            {choice}
+          </button>
+        ))}
       </div>
     </div>
   );
