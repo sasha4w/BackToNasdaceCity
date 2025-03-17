@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import "./App.css";
 import Quiz from "./components/Quiz";
+import Blaster from "./components/Blaster";
 import GameOver from "./components/GameOver";
 import ThreeScene from "./components/ThreeScene";
 import ATH from "./components/ATH";
@@ -30,7 +31,8 @@ function App() {
                 />
               </div>
               <div className="card">
-                <Quiz setter={setFuel} fuel={fuel} />
+                {/* <Quiz setter={setFuel} fuel={fuel} /> */}
+                <Blaster setter={setFuel} fuel={fuel} />
               </div>
             </>
           }
